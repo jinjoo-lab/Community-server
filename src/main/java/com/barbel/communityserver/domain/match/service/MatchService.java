@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -15,7 +16,6 @@ public class MatchService {
 
     private final MatchRepository matchRepository;
 
-    @Autowired
     MatchService(MatchRepository matchRepository)
     {
         this.matchRepository = matchRepository;
@@ -31,7 +31,7 @@ public class MatchService {
         return list;
     }
 
-    public MatchDto getMatch(long id)
+    public MatchDto getMatch(String id)
     {
         Optional<Match> match = matchRepository.findById(id);
         if(match.isPresent())
@@ -45,19 +45,19 @@ public class MatchService {
 
     public void saveMatch(MatchDto matchDto)
     {
-        Match match = Match.builder().mentorId(matchDto.getMentorId())
-                .menteeId(matchDto.menteeId).matchDate(matchDto.matchDate).build();
+        Match match = Match.builder().mentorId(matchDto.mentorId)
+                .menteeId(matchDto.menteeId).build();
         matchRepository.save(match);
 
     }
 
-    public void deleteMatch(long id)
+    public void deleteMatch(String id)
     {
         matchRepository.deleteById(id);
     }
     public MatchDto convert(Match match)
     {
-        MatchDto dto = new MatchDto(match.getMentorId(), match.getMenteeId(),match.getDate());
+        MatchDto dto = new MatchDto(match.getMentorId(), match.getMenteeId(),new Date());
 
         return dto;
     }

@@ -13,7 +13,6 @@ public class MatchController {
 
     private MatchService matchService;
 
-    @Autowired
     public MatchController(MatchService matchService)
     {
         this.matchService = matchService;
@@ -28,7 +27,7 @@ public class MatchController {
     }
 
     @GetMapping("/get/{id}")
-    public MatchDto matchGet(@PathVariable long id)
+    public MatchDto matchGet(@PathVariable String id)
     {
         return matchService.getMatch(id);
     }
@@ -40,7 +39,7 @@ public class MatchController {
     }
 
     @GetMapping("/delete/{id}")
-    public void matchDelete(@PathVariable long id)
+    public void matchDelete(@PathVariable String id)
     {
         matchService.deleteMatch(id);
     }

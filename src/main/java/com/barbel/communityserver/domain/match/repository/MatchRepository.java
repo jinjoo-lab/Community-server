@@ -1,15 +1,19 @@
 package com.barbel.communityserver.domain.match.repository;
-
 import com.barbel.communityserver.domain.match.entity.Match;
-import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.stereotype.Repository;
+
 import java.util.List;
 import java.util.Optional;
 
-public interface MatchRepository extends JpaRepository<Match,Long> {
+@Repository
+public interface MatchRepository extends MongoRepository<Match,Long> {
 
-    @Override
-    Optional<Match> findById(Long aLong);
+    Optional<Match> findById(String id);
 
+    Optional<Match> findByMentorIdAndMenteeId(long mentorId, long menteeId);
     @Override
     List<Match> findAll();
+
+    void deleteById(String id);
 }
