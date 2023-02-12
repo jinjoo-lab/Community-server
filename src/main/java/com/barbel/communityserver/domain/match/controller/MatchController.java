@@ -5,6 +5,7 @@ import com.barbel.communityserver.domain.match.service.MatchService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.ParseException;
 import java.util.List;
 
 @RestController
@@ -13,7 +14,6 @@ public class MatchController {
 
     private MatchService matchService;
 
-    @Autowired
     public MatchController(MatchService matchService)
     {
         this.matchService = matchService;
@@ -28,19 +28,19 @@ public class MatchController {
     }
 
     @GetMapping("/get/{id}")
-    public MatchDto matchGet(@PathVariable long id)
+    public MatchDto matchGet(@PathVariable String id)
     {
         return matchService.getMatch(id);
     }
 
     @PostMapping("/save")
-    public void matchSave(MatchDto matchDto)
+    public void matchSave(MatchDto matchDto) throws ParseException
     {
         matchService.saveMatch(matchDto);
     }
 
     @GetMapping("/delete/{id}")
-    public void matchDelete(@PathVariable long id)
+    public void matchDelete(@PathVariable String id)
     {
         matchService.deleteMatch(id);
     }

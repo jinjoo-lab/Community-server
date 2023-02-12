@@ -1,0 +1,15 @@
+spring:
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+  datasource:
+    driver-class-name: mongodb
+  data:
+    mongodb:
+      uri: mongodb://127.0.0.1:27017/msa
+      host: localhost
+      port: 27017
+      database: msa
+  mongodb:
+    embedded:
+      version: 4.0.21

@@ -6,7 +6,11 @@ import com.barbel.communityserver.domain.match.repository.MatchRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -15,7 +19,6 @@ public class MatchService {
 
     private final MatchRepository matchRepository;
 
-    @Autowired
     MatchService(MatchRepository matchRepository)
     {
         this.matchRepository = matchRepository;
@@ -31,7 +34,7 @@ public class MatchService {
         return list;
     }
 
-    public MatchDto getMatch(long id)
+    public MatchDto getMatch(String id)
     {
         Optional<Match> match = matchRepository.findById(id);
         if(match.isPresent())
@@ -43,21 +46,31 @@ public class MatchService {
         }
     }
 
-    public void saveMatch(MatchDto matchDto)
+    public void saveMatch(MatchDto matchDto) throws ParseException
     {
-        Match match = Match.builder().mentorId(matchDto.getMentorId())
-                .menteeId(matchDto.menteeId).matchDate(matchDto.matchDate).build();
+        Date now = convertDate(matchDto.matchDate);
+
+        Match match = Match.builder().mentorId(matchDto.mentorId)
+                .menteeId(matchDto.menteeId).date(now).build();
         matchRepository.save(match);
 
     }
 
-    public void deleteMatch(long id)
+    public Date convertDate(String date) throws ParseException {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        return sdf.parse(date);
+    }
+
+    public void deleteMatch(String id)
     {
         matchRepository.deleteById(id);
     }
     public MatchDto convert(Match match)
     {
-        MatchDto dto = new MatchDto(match.getMentorId(), match.getMenteeId(),match.getDate());
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        String strDate = dateFormat.format(match.getDate());
+
+        MatchDto dto = new MatchDto(match.getMentorId(), match.getMenteeId(),strDate);
 
         return dto;
     }

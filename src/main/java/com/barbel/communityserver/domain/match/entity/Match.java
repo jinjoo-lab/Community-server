@@ -1,25 +1,23 @@
 package com.barbel.communityserver.domain.match.entity;
 
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 import java.util.Date;
 
-@Entity
+
 @Getter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@ToString
+@Document(collection = "match")
 public class Match {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private String id;
+
     private long mentorId;
     private long menteeId;
 
@@ -27,11 +25,12 @@ public class Match {
 
 
     @Builder
-    public Match(long mentorId,String mentorName,long menteeId,String menteeName,Date matchDate)
+    public Match(String id,long mentorId,long menteeId,Date date)
     {
+        this.id = id;
         this.menteeId = menteeId;
         this.mentorId = mentorId;
-        this.date = matchDate;
+        this.date = date;
     }
 
 }
