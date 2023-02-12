@@ -5,6 +5,7 @@ import com.barbel.communityserver.domain.match.service.MatchService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.ParseException;
 import java.util.List;
 
 @RestController
@@ -33,7 +34,7 @@ public class MatchController {
     }
 
     @PostMapping("/save")
-    public void matchSave(MatchDto matchDto)
+    public void matchSave(MatchDto matchDto) throws ParseException
     {
         matchService.saveMatch(matchDto);
     }

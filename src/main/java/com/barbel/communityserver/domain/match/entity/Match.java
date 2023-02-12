@@ -21,13 +21,16 @@ public class Match {
     private long mentorId;
     private long menteeId;
 
+    private Date date;
+
 
     @Builder
-    public Match(String id,long mentorId,long menteeId)
+    public Match(String id,long mentorId,long menteeId,Date date)
     {
         this.id = id;
         this.menteeId = menteeId;
         this.mentorId = mentorId;
+        this.date = date;
     }
 
 }

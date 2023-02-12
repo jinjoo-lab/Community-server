@@ -6,6 +6,9 @@ import com.barbel.communityserver.domain.match.repository.MatchRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -43,12 +46,19 @@ public class MatchService {
         }
     }
 
-    public void saveMatch(MatchDto matchDto)
+    public void saveMatch(MatchDto matchDto) throws ParseException
     {
+        Date now = convertDate(matchDto.matchDate);
+
         Match match = Match.builder().mentorId(matchDto.mentorId)
-                .menteeId(matchDto.menteeId).build();
+                .menteeId(matchDto.menteeId).date(now).build();
         matchRepository.save(match);
 
+    }
+
+    public Date convertDate(String date) throws ParseException {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        return sdf.parse(date);
     }
 
     public void deleteMatch(String id)
@@ -57,7 +67,10 @@ public class MatchService {
     }
     public MatchDto convert(Match match)
     {
-        MatchDto dto = new MatchDto(match.getMentorId(), match.getMenteeId(),new Date());
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        String strDate = dateFormat.format(match.getDate());
+
+        MatchDto dto = new MatchDto(match.getMentorId(), match.getMenteeId(),strDate);
 
         return dto;
     }
