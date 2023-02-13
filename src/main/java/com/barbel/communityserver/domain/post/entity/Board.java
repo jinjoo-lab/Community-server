@@ -22,11 +22,15 @@ public class Board {
     @NotBlank
     private String content;
 
+    @NotBlank
     private String location;
 
+    @NotBlank
     private String userId;
 
     private long views;
+
+    // 댓글 추가 List<Comment> comments = new ArrayList<>();
 
     @Builder
     public Board(String title,String content,String location,String userId,long views)
