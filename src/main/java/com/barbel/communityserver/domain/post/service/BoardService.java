@@ -1,8 +1,10 @@
 package com.barbel.communityserver.domain.post.service;
 
 import com.barbel.communityserver.domain.post.dto.BoardDto;
+import com.barbel.communityserver.domain.post.dto.BoardReplyDto;
 import com.barbel.communityserver.domain.post.entity.Board;
 import com.barbel.communityserver.domain.post.repository.BoardRepository;
+import com.barbel.communityserver.domain.post.repository.CommentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,30 +16,32 @@ import java.util.Optional;
 public class BoardService {
 
     private BoardRepository boardRepository;
+    private CommentRepository commentRepository;
 
     @Autowired
-    public BoardService(BoardRepository boardRepository)
+    public BoardService(BoardRepository boardRepository,CommentRepository commentRepository)
     {
         this.boardRepository = boardRepository;
+        this.commentRepository = commentRepository;
     }
 
-    public BoardDto convert(Board board)
+    public BoardReplyDto convert(Board board)
     {
-        BoardDto boardDto = new BoardDto();
+        BoardReplyDto boardDto = new BoardReplyDto();
         boardDto.setTitle(board.getTitle());
         boardDto.setLocation(board.getLocation());
         boardDto.setContent(board.getContent());
         boardDto.setUserId(board.getUserId());
         boardDto.setViews(board.getViews());
-
+        boardDto.setComments(board.getComments());
         return boardDto;
     }
 
-    public List<BoardDto> getAll()
+    public List<BoardReplyDto> getAll()
     {
         List<Board> list =  boardRepository.findAll();
 
-        List<BoardDto> boardDtoList = new LinkedList<>();
+        List<BoardReplyDto> boardDtoList = new LinkedList<>();
 
         for (Board board : list)
         {
@@ -62,14 +66,21 @@ public class BoardService {
 
         if(board.isPresent())
         {
-            if(board.get().getUserId().equals(userId))
+            Board cur = board.get();
+            if(cur.getUserId().equals(userId))
             {
+                List<String> commentList = cur.getComments();
+                for(String commentId : commentList)
+                {
+                    commentRepository.deleteById(commentId);
+                }
+
                 boardRepository.deleteById(id);
             }
         }
     }
 
-    public BoardDto getBoard(String id)
+    public BoardReplyDto getBoard(String id)
     {
         Optional<Board> board = boardRepository.findById(id);
 

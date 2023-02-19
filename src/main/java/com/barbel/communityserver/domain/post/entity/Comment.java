@@ -31,10 +31,21 @@ public class Comment {
     private List<Comment> childList = new ArrayList<>();
 
     @Builder
-    public Comment(String boardId,String content)
+    public Comment(String boardId,String userId,String content)
     {
         this.boardId = boardId;
         this.content = content;
+        this.userId = userId;
         this.good = 0;
+    }
+
+    public void setContent(String content)
+    {
+        this.content = content;
+    }
+
+    public void addReComment(Comment comment)
+    {
+        this.childList.add(comment);
     }
 }

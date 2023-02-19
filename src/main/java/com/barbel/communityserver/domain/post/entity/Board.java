@@ -7,7 +7,9 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.validation.constraints.NotBlank;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Document(collection = "board")
 @Getter
@@ -30,7 +32,8 @@ public class Board {
 
     private long views;
 
-    // 댓글 추가 List<Comment> comments = new ArrayList<>();
+    // 댓글들의 id만 가지고 있도록 설정
+    private List<String> comments = new ArrayList<>();
 
     @Builder
     public Board(String title,String content,String location,String userId,long views)
@@ -40,5 +43,10 @@ public class Board {
         this.location = location;
         this.userId = userId;
         this.views = views;
+    }
+
+    public void addComment(String commentId)
+    {
+        this.comments.add(commentId);
     }
 }
