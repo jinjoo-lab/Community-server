@@ -1,6 +1,7 @@
 package com.barbel.communityserver.domain.post.controller;
 
 import com.barbel.communityserver.domain.post.dto.BoardDto;
+import com.barbel.communityserver.domain.post.dto.BoardReplyDto;
 import com.barbel.communityserver.domain.post.service.BoardService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -21,13 +22,13 @@ public class BoardController {
 
     // 후에 page 단위로 분리할 수 있도록 수정 필요
     @GetMapping()
-    public List<BoardDto> getAll()
+    public List<BoardReplyDto> getAll()
     {
         return boardService.getAll();
     }
 
     @GetMapping("/get/{id}")
-    public BoardDto getBoard(@PathVariable  String id) throws RuntimeException
+    public BoardReplyDto getBoard(@PathVariable  String id) throws RuntimeException
     {
         return boardService.getBoard(id);
     }
