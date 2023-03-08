@@ -48,4 +48,8 @@ public class Comment {
     {
         this.childList.add(comment);
     }
+
+    public void setGood(long good) {
+        this.good = good;
+    }
 }

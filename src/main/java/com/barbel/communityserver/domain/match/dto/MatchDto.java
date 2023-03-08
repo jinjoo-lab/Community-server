@@ -8,15 +8,15 @@ import java.util.Date;
 
 @Data
 public class MatchDto {
-    public long mentorId;
-    public long menteeId;
 
+    public String mentorEmail;
+    public String menteeEmail;
     public String matchDate;
 
-    public MatchDto(long mentorId,long menteeId,String date)
+    public MatchDto(String mentorEmail,String menteeEmail,String date)
     {
-        this.mentorId = mentorId;
-        this.menteeId = menteeId;
+        this.mentorEmail = mentorEmail;
+        this.menteeEmail = menteeEmail;
         this.matchDate = date;
     }
 }

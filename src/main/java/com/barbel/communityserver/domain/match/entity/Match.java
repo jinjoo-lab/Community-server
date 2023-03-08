@@ -17,19 +17,20 @@ import java.util.Date;
 public class Match {
     @Id
     private String id;
-
-    private long mentorId;
-    private long menteeId;
+    @NotBlank
+    private String mentorEmail;
+    @NotBlank
+    private String menteeEmail;
 
     private Date date;
 
 
     @Builder
-    public Match(String id,long mentorId,long menteeId,Date date)
+    public Match(String id,String mentorEmail,String menteeEmail,Date date)
     {
         this.id = id;
-        this.menteeId = menteeId;
-        this.mentorId = mentorId;
+        this.mentorEmail = mentorEmail;
+        this.menteeEmail = menteeEmail;
         this.date = date;
     }
 

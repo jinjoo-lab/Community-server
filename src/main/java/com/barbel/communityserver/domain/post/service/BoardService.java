@@ -3,14 +3,23 @@ package com.barbel.communityserver.domain.post.service;
 import com.barbel.communityserver.domain.post.dto.BoardDto;
 import com.barbel.communityserver.domain.post.dto.BoardReplyDto;
 import com.barbel.communityserver.domain.post.entity.Board;
+import com.barbel.communityserver.domain.post.entity.Comment;
 import com.barbel.communityserver.domain.post.repository.BoardRepository;
 import com.barbel.communityserver.domain.post.repository.CommentRepository;
+import com.mongodb.BasicDBObject;
+import com.mongodb.DBObject;
+import com.mongodb.client.gridfs.model.GridFSFile;
+import org.bson.BSONObject;
+import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.gridfs.GridFsTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.multipart.MultipartFile;
 
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Optional;
+import java.io.IOException;
+import java.util.*;
 
 @Service
 public class BoardService {
@@ -18,11 +27,13 @@ public class BoardService {
     private BoardRepository boardRepository;
     private CommentRepository commentRepository;
 
+    private GridFsTemplate gridFsTemplate;
     @Autowired
-    public BoardService(BoardRepository boardRepository,CommentRepository commentRepository)
+    public BoardService(BoardRepository boardRepository,CommentRepository commentRepository,GridFsTemplate gridFsTemplate)
     {
         this.boardRepository = boardRepository;
         this.commentRepository = commentRepository;
+        this.gridFsTemplate = gridFsTemplate;
     }
 
     public BoardReplyDto convert(Board board)
@@ -93,4 +104,37 @@ public class BoardService {
             throw new RuntimeException("해당 내용의 게시판은 존재하지 않습니다.");
         }
     }
+
+    public List<Comment> getAllComments(String boardId)
+    {
+        Board board = boardRepository.getById(boardId);
+        List<Comment> commentList = new ArrayList<>();
+
+        for(String commentId : board.getComments())
+        {
+            commentList.add(commentRepository.getById(commentId));
+        }
+
+        return commentList;
+    }
+
+    public void uploadFile(MultipartFile file,String userEmail) throws IOException {
+        DBObject dbObject = new BasicDBObject();
+        dbObject.put("fileName",file.getOriginalFilename());
+        dbObject.put("contentType",file.getContentType());
+        dbObject.put("size",file.getSize());
+        dbObject.put("userId",userEmail);
+        ObjectId objectId = gridFsTemplate.store(file.getInputStream(),file.getOriginalFilename(),dbObject);
+        System.out.println(objectId);
+    }
+
+    public List<String> get() {
+        List<String> fileNames = new ArrayList<>();
+        gridFsTemplate
+                .find(new Query())
+                .map(GridFSFile::getFilename)
+                .into(fileNames);
+        return fileNames;
+    }
+
 }

@@ -7,11 +7,11 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface MatchRepository extends MongoRepository<Match,Long> {
+public interface MatchRepository extends MongoRepository<Match,String> {
 
     Optional<Match> findById(String id);
 
-    Optional<Match> findByMentorIdAndMenteeId(long mentorId, long menteeId);
+    Optional<Match> findByMentorEmailAndMenteeEmail(String mentorEmail,String menteeEmail);
     @Override
     List<Match> findAll();
 

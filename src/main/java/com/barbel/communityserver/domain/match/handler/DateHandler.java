@@ -13,11 +13,9 @@ public class DateHandler extends StdDeserializer<Date> {
     public DateHandler(){
         this(null);
     }
-
     public DateHandler(Class<?> vc) {
         super(vc);
     }
-
     @Override
     public Date deserialize(JsonParser p, DeserializationContext ctxt) throws IOException, JacksonException {
         String date = p.getText();

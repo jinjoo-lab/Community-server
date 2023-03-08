@@ -50,8 +50,8 @@ public class MatchService {
     {
         Date now = convertDate(matchDto.matchDate);
 
-        Match match = Match.builder().mentorId(matchDto.mentorId)
-                .menteeId(matchDto.menteeId).date(now).build();
+        Match match = Match.builder().mentorEmail(matchDto.mentorEmail)
+                .menteeEmail(matchDto.menteeEmail).date(now).build();
         matchRepository.save(match);
 
     }
@@ -70,7 +70,7 @@ public class MatchService {
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         String strDate = dateFormat.format(match.getDate());
 
-        MatchDto dto = new MatchDto(match.getMentorId(), match.getMenteeId(),strDate);
+        MatchDto dto = new MatchDto(match.getMentorEmail(), match.getMenteeEmail(),strDate);
 
         return dto;
     }

@@ -30,4 +30,10 @@ public class CommentController {
         commentService.saveReComment(parentId, commentSaveDto);
     }
 
+
+    @GetMapping("/good/{id}")
+    public void updateGood(@PathVariable String id)
+    {
+        commentService.updateGood(id);
+    }
 }

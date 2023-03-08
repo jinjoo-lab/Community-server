@@ -90,4 +90,10 @@ public class CommentService {
             commentRepository.save(comment);
         }
     }
+
+    public void updateGood(String id)
+    {
+        Comment comment = commentRepository.getById(id);
+        comment.setGood(comment.getGood()+1);
+    }
 }
