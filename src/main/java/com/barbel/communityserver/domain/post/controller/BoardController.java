@@ -5,16 +5,13 @@ import com.barbel.communityserver.domain.post.dto.BoardReplyDto;
 import com.barbel.communityserver.domain.post.entity.Comment;
 import com.barbel.communityserver.domain.post.service.BoardService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.mongodb.gridfs.GridFsTemplate;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-@RequestMapping("/board")
+@RequestMapping("community/board")
 public class BoardController {
 
     private BoardService boardService;
@@ -46,7 +43,7 @@ public class BoardController {
     }
 
     // userId를 개인 정보창에서 가져 올지 , 회원 디비에서 가져 올지 결정 필요
-    @GetMapping("/delete/{id}/{userId}")
+    @DeleteMapping("/delete/{id}/{userId}")
     public void deleteBoard(@PathVariable String id,@PathVariable String userId)
     {
         boardService.deleteBoardById(userId,id);

@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/comment")
+@RequestMapping("community/comment")
 public class CommentController {
 
     private CommentService commentService;
@@ -35,5 +35,11 @@ public class CommentController {
     public void updateGood(@PathVariable String id)
     {
         commentService.updateGood(id);
+    }
+
+    @GetMapping("/test")
+    public String test1()
+    {
+        return "hello";
     }
 }
